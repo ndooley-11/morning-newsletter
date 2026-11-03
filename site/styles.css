@@ -1,0 +1,404 @@
+:root {
+  --newsprint: #faf8f2;
+  --surface: #eeece7;
+  --ink: #252a32;
+  --accent: #243b5a;
+  --secondary: #666b73;
+  --rule: #b9bec7;
+  --focus-ring: #0b5fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --newsprint: #1a1c20;
+    --surface: #23262c;
+    --ink: #e8e6df;
+    --accent: #8ba7d2;
+    --secondary: #a7acb5;
+    --rule: #3a3f49;
+    --focus-ring: #8ba7d2;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.noscript-banner {
+  padding: 2rem;
+  background: var(--accent);
+  color: var(--newsprint);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.tv-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 3vmin 4vmin;
+  gap: 2vmin;
+}
+
+.masthead {
+  border-bottom: 3px double var(--accent);
+  padding-bottom: 1.2vmin;
+}
+
+.masthead-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.masthead-titles {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#edition-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+
+.edition-date {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.edition-status {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  color: var(--secondary);
+}
+
+.weather-strip {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.8vmin;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  color: var(--secondary);
+  border-left: 2px solid var(--rule);
+  padding-left: 0.6rem;
+}
+
+.weather-location {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.viewer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.6vmin 0;
+}
+
+.slide-stage {
+  flex: 1;
+  background: var(--newsprint);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 3vmin 4vmin;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.slide-stage:focus {
+  outline: none;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  gap: 1vmin;
+  height: 100%;
+}
+
+.kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.75rem, 1vw, 0.95rem);
+  color: var(--secondary);
+}
+
+.headline {
+  margin: 0 0 0.6vmin 0;
+  font-size: clamp(1.8rem, 4.2vw, 4rem);
+  line-height: 1.1;
+  color: var(--ink);
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 0.5vmin;
+}
+
+.story-full,
+.story-split {
+  flex: 1;
+  min-height: 0;
+}
+
+.story-split {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3vmin;
+  align-items: start;
+}
+
+.story-text .summary {
+  font-size: clamp(1.1rem, 2vw, 1.9rem);
+  line-height: 1.5;
+  max-width: 44em;
+  margin: 0.5em 0;
+}
+
+.source-line {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  color: var(--secondary);
+}
+
+.photo-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vmin;
+}
+
+.archive-label {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.photo-figure img {
+  width: 100%;
+  max-height: 42vh;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.image-fallback {
+  padding: 1rem;
+  border: 1px dashed var(--rule);
+  color: var(--secondary);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.9rem;
+}
+
+figcaption {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  color: var(--secondary);
+  line-height: 1.4;
+}
+
+.image-links {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+}
+
+.comic-panels {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2vmin;
+}
+
+.comic-panel {
+  border: 1px solid var(--rule);
+  padding: 1.5vmin;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6vmin;
+}
+
+.comic-panel h3 {
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  color: var(--accent);
+}
+
+.comic-panel p {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.3rem);
+  line-height: 1.4;
+}
+
+.error-slide h2 {
+  color: var(--accent);
+}
+
+.error-slide button {
+  align-self: flex-start;
+}
+
+.controls-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6vmin;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.controls button,
+.controls select {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  background: var(--accent);
+  color: var(--newsprint);
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.controls select {
+  background: var(--newsprint);
+  color: var(--ink);
+}
+
+.duration-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  color: var(--secondary);
+}
+
+.keyboard-help {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  color: var(--secondary);
+}
+
+.disclosure {
+  margin: 0;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  color: var(--secondary);
+}
+
+.disclosure a {
+  margin-left: 0.4rem;
+}
+
+@media (min-width: 1000px) {
+  .tv-frame { height: 100vh; }
+  .headline { font-size: clamp(1.8rem, 3.2vw, 3.3rem); }
+  .weather-card { flex: 1; min-width: 0; }
+  .masthead-titles { gap: 0.6rem; }
+  .story-text .summary { line-height: 1.35; }
+}
+
+@media (max-width: 900px) {
+  .story-split {
+    grid-template-columns: 1fr;
+  }
+  .comic-panels {
+    grid-template-columns: 1fr;
+  }
+  .photo-figure img {
+    max-height: 32vh;
+  }
+}
+
+@media (max-width: 600px) {
+  html, body {
+    height: auto;
+    overflow-y: auto;
+  }
+  .tv-frame {
+    padding: 4vmin 5vw;
+    min-height: auto;
+  }
+  .slide-stage {
+    overflow-y: visible;
+  }
+  .headline {
+    font-size: clamp(1.4rem, 7vw, 2.2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

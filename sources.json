@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "feeds": [
+    {
+      "label": "BBC News",
+      "url": "https://feeds.bbci.co.uk/news/rss.xml",
+      "host": "feeds.bbci.co.uk",
+      "desk": "news",
+      "section": "World News"
+    },
+    {
+      "label": "ESPN",
+      "url": "https://www.espn.com/espn/rss/news",
+      "host": "www.espn.com",
+      "desk": "sports",
+      "section": "Sports"
+    },
+    {
+      "label": "NASA",
+      "url": "https://www.nasa.gov/feed/",
+      "host": "www.nasa.gov",
+      "desk": "science-tech",
+      "section": "Science & Technology"
+    },
+    {
+      "label": "Dezeen",
+      "url": "https://www.dezeen.com/feed/",
+      "host": "www.dezeen.com",
+      "desk": "architecture-housing",
+      "section": "Architecture & Housing"
+    },
+    {
+      "label": "Budget Bytes",
+      "url": "https://www.budgetbytes.com/feed/",
+      "host": "www.budgetbytes.com",
+      "desk": "lifestyle",
+      "section": "Lifestyle"
+    }
+  ],
+  "weather": [
+    {
+      "location": "Savannah, GA 31401",
+      "pointsUrl": "https://api.weather.gov/points/32.0809,-81.0912",
+      "host": "api.weather.gov"
+    },
+    {
+      "location": "Hinsdale, IL 60521",
+      "pointsUrl": "https://api.weather.gov/points/41.8009,-87.9370",
+      "host": "api.weather.gov"
+    }
+  ]
+}

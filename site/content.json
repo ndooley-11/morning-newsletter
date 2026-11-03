@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "edition": {
+    "id": "2026-11-03-9d2e2d28c78a16f0",
+    "date": "2026-11-03",
+    "title": "The Morning Edition",
+    "subtitle": "Savannah & Hinsdale",
+    "timezone": "America/New_York",
+    "isExample": false,
+    "generatedAt": "2026-11-03T15:03:15Z"
+  },
+  "playback": {
+    "secondsPerSlide": 12,
+    "refreshSeconds": 300
+  },
+  "weather": [
+    {
+      "location": "Savannah, GA 31401",
+      "summary": "Today: Mostly sunny, with a high near 80. East wind 10 to 14 mph,…",
+      "asOf": "2026-11-03T12:30:24Z"
+    },
+    {
+      "location": "Hinsdale, IL 60521",
+      "summary": "Today: A chance of rain showers after 1pm. Mostly cloudy, with a high near…",
+      "asOf": "2026-11-03T11:31:07Z"
+    }
+  ],
+  "slides": [
+    {
+      "id": "notice-ee6628323d36926d",
+      "type": "story",
+      "desk": "news",
+      "section": "Edition status",
+      "headline": "Current capture: 2026-11-03T15:03:15Z",
+      "summary": "This is a partial public-source digest captured at 2026-11-03T15:03:15Z, not AI research. Current story desks: 3; unavailable desks: 4; valid weather locations: 2. RSS/Atom titles only; publication dates appear in source provenance."
+    },
+    {
+      "id": "story-24ed2a8d476486cc",
+      "type": "story",
+      "desk": "news",
+      "section": "World News",
+      "headline": "How the US midterm results could unfold - as millions of Americans head to the polls",
+      "summary": "Published 2026-11-03T10:32:56Z; captured 2026-11-03T15:03:15Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "source": {
+        "label": "BBC News",
+        "url": "https://www.bbc.co.uk/news/articles/cq78pgn7em34o?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-03T10:32:56Z"
+      }
+    },
+    {
+      "id": "story-0c99334a12ae9024",
+      "type": "story",
+      "desk": "news",
+      "section": "World News",
+      "headline": "Spanish footballer dies after collision with goalkeeper during match",
+      "summary": "Published 2026-11-03T09:09:18Z; captured 2026-11-03T15:03:15Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "source": {
+        "label": "BBC News",
+        "url": "https://www.bbc.co.uk/sport/football/articles/ck62yvz046pjo?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-03T09:09:18Z"
+      }
+    },
+    {
+      "id": "story-737ad0e205f43fc5",
+      "type": "story",
+      "desk": "sports",
+      "section": "Sports",
+      "headline": "NFL Week 9 Power Rankings: Updated 1-32 poll, plus the best in-season trade acquisitions ever",
+      "summary": "Published 2026-11-03T14:13:28Z; captured 2026-11-03T15:03:15Z. RSS/Atom title from ESPN; no article body or long summary was copied.",
+      "source": {
+        "label": "ESPN",
+        "url": "https://www.espn.com/nfl/story/_/id/50359434/nfl-power-rankings-week-9-teams-best-season-trades-deadline",
+        "asOf": "2026-11-03T14:13:28Z"
+      }
+    },
+    {
+      "id": "story-83b4333d627f8457",
+      "type": "story",
+      "desk": "sports",
+      "section": "Sports",
+      "headline": "Let's kick off Week 9: Why Solak thinks the Buccaneers, Steelers will win their divisions",
+      "summary": "Published 2026-11-03T14:13:28Z; captured 2026-11-03T15:03:15Z. RSS/Atom title from ESPN; no article body or long summary was copied.",
+      "source": {
+        "label": "ESPN",
+        "url": "https://www.espn.com/nfl/story/_/id/50355612/week-9-seven-things-solak-thinks-trades-standings",
+        "asOf": "2026-11-03T14:13:28Z"
+      }
+    },
+    {
+      "id": "story-f2ac443343f8f14a",
+      "type": "story",
+      "desk": "lifestyle",
+      "section": "Lifestyle",
+      "headline": "Chicken Corn Chowder",
+      "summary": "Published 2026-11-02T14:30:00Z; captured 2026-11-03T15:03:15Z. RSS/Atom title from Budget Bytes; no article body or long summary was copied.",
+      "source": {
+        "label": "Budget Bytes",
+        "url": "https://www.budgetbytes.com/chicken-corn-chowder/",
+        "asOf": "2026-11-02T14:30:00Z"
+      }
+    },
+    {
+      "id": "notice-915ee8ad84396f85",
+      "type": "story",
+      "desk": "weather",
+      "section": "Local forecast",
+      "headline": "Savannah, GA 31401",
+      "summary": "NWS forecast updated 2026-11-03T12:30:24Z. Today: Mostly sunny, with a high near 80. East wind 10 to 14 mph, with gusts as high as 23 mph. Tonight: Partly cloudy, with a low around 68. East wind 5 to 12 mph, with gusts as high as 21 mph. Wednesday: Partly sunny, with a high near 81. East wind 5 to 10 mph."
+    },
+    {
+      "id": "notice-02554cbc314307a2",
+      "type": "story",
+      "desk": "weather",
+      "section": "Local forecast",
+      "headline": "Hinsdale, IL 60521",
+      "summary": "NWS forecast updated 2026-11-03T11:31:07Z. Today: A chance of rain showers after 1pm. Mostly cloudy, with a high near 70. South wind 15 to 20 mph, with gusts as high as 40 mph. Chance of precipitation is 40%. New rainfall amounts less than a tenth of an inch possible. Tonight: Rain showers. Mostly cloudy, with a low around 61. South wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 90%. New rainfall amounts between a quarter and half of an inch possible. Wednesday: Rain showers likely. Mostly cloudy. High near 64, with temperatures falling to around 59 in the afternoon. South southwest wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 60%. New rainfall amounts less than a tenth of an inch possible."
+    },
+    {
+      "id": "notice-0a3e220d3e35dc48",
+      "type": "story",
+      "desk": "science-tech",
+      "section": "Coverage notice",
+      "headline": "Science Tech coverage unavailable",
+      "summary": "No current story title was available from the configured free public sources at capture time."
+    },
+    {
+      "id": "notice-7300b124399a50b6",
+      "type": "story",
+      "desk": "architecture-housing",
+      "section": "Coverage notice",
+      "headline": "Architecture Housing coverage unavailable",
+      "summary": "No current story title was available from the configured free public sources at capture time."
+    },
+    {
+      "id": "notice-cb8bf380a6fc01e8",
+      "type": "story",
+      "desk": "markets",
+      "section": "Markets coverage — Short horizon",
+      "headline": "Markets coverage unavailable — short horizon",
+      "summary": "No current verifiable free public feed was configured or returned usable data. No pick, trade, wager, forecast, or recommendation is provided."
+    },
+    {
+      "id": "notice-3b897026959c8c34",
+      "type": "story",
+      "desk": "markets",
+      "section": "Markets coverage — Long horizon",
+      "headline": "Markets coverage unavailable — long horizon",
+      "summary": "No current verifiable free public feed was configured or returned usable data. No pick, trade, wager, forecast, or recommendation is provided."
+    },
+    {
+      "id": "notice-85ae3f9020bdae6f",
+      "type": "story",
+      "desk": "betting",
+      "section": "Betting coverage — Short horizon",
+      "headline": "Betting coverage unavailable — short horizon",
+      "summary": "No current verifiable free public feed was configured or returned usable data. No pick, trade, wager, forecast, or recommendation is provided."
+    },
+    {
+      "id": "notice-9b88cd30e6f1c3cd",
+      "type": "story",
+      "desk": "betting",
+      "section": "Betting coverage — Long horizon",
+      "headline": "Betting coverage unavailable — long horizon",
+      "summary": "No current verifiable free public feed was configured or returned usable data. No pick, trade, wager, forecast, or recommendation is provided."
+    }
+  ],
+  "quality": {
+    "mode": "partial",
+    "captureTime": "2026-11-03T15:03:15Z",
+    "coverage": {
+      "desksTotal": 8,
+      "desksWithCurrentStories": 3,
+      "currentStoryDesks": [
+        "lifestyle",
+        "news",
+        "sports"
+      ],
+      "unavailableDesks": [
+        "science-tech",
+        "architecture-housing",
+        "markets",
+        "betting"
+      ],
+      "configuredSources": 7,
+      "successfulSources": 5,
+      "failedSources": 2,
+      "weatherLocationsConfigured": 2,
+      "weatherLocationsValid": 2,
+      "stories": 5,
+      "slides": 14
+    },
+    "errors": [
+      {
+        "source": "NASA",
+        "code": "feed-invalid"
+      },
+      {
+        "source": "Dezeen",
+        "code": "fetch-failed"
+      }
+    ]
+  }
+}

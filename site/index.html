@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>The Morning Edition — TV Viewer</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<noscript>
+  <div class="noscript-banner">
+    This viewer requires JavaScript to load and display the newsletter edition. Please enable JavaScript to continue.
+  </div>
+</noscript>
+
+<div class="tv-frame" id="tv-frame">
+  <header class="masthead" id="masthead">
+    <div class="masthead-row">
+      <div class="masthead-titles">
+        <h1 id="edition-title">The Morning Edition</h1>
+        <span id="edition-date" class="edition-date"></span>
+      </div>
+      <p id="edition-status" class="edition-status" role="status" aria-live="polite"></p>
+    </div>
+    <div class="weather-strip" id="weather-strip" aria-label="Local weather"></div>
+  </header>
+
+  <main class="viewer" id="viewer">
+    <div class="section-row">
+      <span class="current-section" id="current-section"></span>
+      <span class="slide-counter" id="slide-counter">0 / 0</span>
+    </div>
+    <div id="slide-stage" class="slide-stage" aria-live="polite" tabindex="-1"></div>
+  </main>
+
+  <footer class="controls-bar">
+    <div class="controls" role="group" aria-label="Playback controls">
+      <button type="button" id="btn-prev">Previous</button>
+      <button type="button" id="btn-pause" aria-pressed="false">Pause</button>
+      <button type="button" id="btn-next">Next</button>
+      <button type="button" id="btn-reload">Reload</button>
+      <button type="button" id="btn-fullscreen">Fullscreen</button>
+      <span class="duration-field">
+        <label for="duration-select">Slide duration</label>
+        <select id="duration-select">
+          <option value="8">8s</option>
+          <option value="12" selected>12s</option>
+          <option value="20">20s</option>
+          <option value="30">30s</option>
+          <option value="60">60s</option>
+        </select>
+      </span>
+    </div>
+    <div class="keyboard-help" aria-hidden="true">
+      <span>&larr; / &rarr; navigate</span>
+      <span>Space pause / resume</span>
+      <span>F fullscreen</span>
+    </div>
+    <p class="disclosure">
+      For research and informational purposes only — not investment, trading, or wagering advice. No automated trades or wagers are placed.
+      <a href="https://nicolasdooley.com/" rel="noopener noreferrer">Back to portfolio</a>
+    </p>
+  </footer>
+</div>
+
+<script src="./app.js" defer></script>
+</body>
+</html>
