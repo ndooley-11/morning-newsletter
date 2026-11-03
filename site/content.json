@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "edition": {
-    "id": "2026-11-03-9d10daf312f47cb5",
+    "id": "2026-11-03-078a6eab79c87724",
     "date": "2026-11-03",
     "title": "The Morning Edition",
     "subtitle": "Savannah & Hinsdale",
     "timezone": "America/New_York",
     "isExample": false,
-    "generatedAt": "2026-11-03T15:27:59Z"
+    "generatedAt": "2026-11-03T15:38:57Z"
   },
   "playback": {
     "secondsPerSlide": 12,
@@ -27,12 +27,12 @@
   ],
   "slides": [
     {
-      "id": "notice-93c241fbcf1cf343",
+      "id": "notice-b92d12a9bb4cfb83",
       "type": "story",
       "desk": "news",
       "section": "Edition status",
-      "headline": "Current capture: 2026-11-03T15:27:59Z",
-      "summary": "This is a partial public-source digest captured at 2026-11-03T15:27:59Z, not AI research. Current story desks: 2; unavailable desks: 5; valid weather locations: 2. RSS/Atom titles only; publication dates appear in source provenance."
+      "headline": "Current capture: 2026-11-03T15:38:57Z",
+      "summary": "This is a partial public-source digest captured at 2026-11-03T15:38:57Z, not AI research. Current story desks: 4; unavailable desks: 3; valid weather locations: 2. RSS/Atom titles only; publication dates appear in source provenance."
     },
     {
       "id": "story-24ed2a8d476486cc",
@@ -40,7 +40,7 @@
       "desk": "news",
       "section": "World News",
       "headline": "How the US midterm results could unfold - as millions of Americans head to the polls",
-      "summary": "Published 2026-11-03T10:32:56Z; captured 2026-11-03T15:27:59Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "summary": "Published 2026-11-03T10:32:56Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
       "source": {
         "label": "BBC News",
         "url": "https://www.bbc.co.uk/news/articles/cq78pgn7em34o?at_medium=RSS&at_campaign=rss",
@@ -53,11 +53,50 @@
       "desk": "news",
       "section": "World News",
       "headline": "Spanish footballer dies after collision with goalkeeper during match",
-      "summary": "Published 2026-11-03T09:09:18Z; captured 2026-11-03T15:27:59Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "summary": "Published 2026-11-03T09:09:18Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
       "source": {
         "label": "BBC News",
         "url": "https://www.bbc.co.uk/sport/football/articles/ck62yvz046pjo?at_medium=RSS&at_campaign=rss",
         "asOf": "2026-11-03T09:09:18Z"
+      }
+    },
+    {
+      "id": "story-21962c2247f2e38a",
+      "type": "story",
+      "desk": "sports",
+      "section": "Sports",
+      "headline": "Saliba's back for Arsenal - how does Arteta solve his defensive dilemma?",
+      "summary": "Published 2026-11-03T15:07:49Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC Sport; no article body or long summary was copied.",
+      "source": {
+        "label": "BBC Sport",
+        "url": "https://www.bbc.co.uk/sport/football/articles/cxj0l3pd9jy7o?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-03T15:07:49Z"
+      }
+    },
+    {
+      "id": "story-61bb1ccb077a9360",
+      "type": "story",
+      "desk": "science-tech",
+      "section": "Science & Technology",
+      "headline": "TB 26-10 Printed Circuit Board Assembly Chip Resistor Body Cracking",
+      "summary": "Published 2026-11-03T15:35:14Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from NASA; no article body or long summary was copied.",
+      "source": {
+        "label": "NASA",
+        "url": "https://www.nasa.gov/centers-and-facilities/nesc/tb-26-10-printed-circuit-board-assembly-chip-resistor-body-cracking/",
+        "asOf": "2026-11-03T15:35:14Z"
+      }
+    },
+    {
+      "id": "story-b37cbeabc38bcc2e",
+      "type": "story",
+      "desk": "science-tech",
+      "section": "Science & Technology",
+      "headline": "NASA Astronaut, STEM Creator Connect with Students for STEM Day",
+      "summary": "Published 2026-11-03T15:15:50Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from NASA; no article body or long summary was copied.",
+      "source": {
+        "label": "NASA",
+        "url": "https://www.nasa.gov/learning-resources/nasa-astronaut-stem-creator-connect-with-students-for-stem-day/",
+        "asOf": "2026-11-03T15:15:50Z"
       }
     },
     {
@@ -66,7 +105,7 @@
       "desk": "lifestyle",
       "section": "Lifestyle",
       "headline": "Chicken Corn Chowder",
-      "summary": "Published 2026-11-02T14:30:00Z; captured 2026-11-03T15:27:59Z. RSS/Atom title from Budget Bytes; no article body or long summary was copied.",
+      "summary": "Published 2026-11-02T14:30:00Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from Budget Bytes; no article body or long summary was copied.",
       "source": {
         "label": "Budget Bytes",
         "url": "https://www.budgetbytes.com/chicken-corn-chowder/",
@@ -88,22 +127,6 @@
       "section": "Local forecast",
       "headline": "Hinsdale, IL 60521",
       "summary": "NWS forecast updated 2026-11-03T11:31:07Z. Today: A chance of rain showers after 1pm. Mostly cloudy, with a high near 70. South wind 15 to 20 mph, with gusts as high as 40 mph. Chance of precipitation is 40%. New rainfall amounts less than a tenth of an inch possible. Tonight: Rain showers. Mostly cloudy, with a low around 61. South wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 90%. New rainfall amounts between a quarter and half of an inch possible. Wednesday: Rain showers likely. Mostly cloudy. High near 64, with temperatures falling to around 59 in the afternoon. South southwest wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 60%. New rainfall amounts less than a tenth of an inch possible."
-    },
-    {
-      "id": "notice-f71284d5fb02f995",
-      "type": "story",
-      "desk": "sports",
-      "section": "Coverage notice",
-      "headline": "Sports coverage unavailable",
-      "summary": "No current story title was available from the configured free public sources at capture time."
-    },
-    {
-      "id": "notice-0a3e220d3e35dc48",
-      "type": "story",
-      "desk": "science-tech",
-      "section": "Coverage notice",
-      "headline": "Science Tech coverage unavailable",
-      "summary": "No current story title was available from the configured free public sources at capture time."
     },
     {
       "id": "notice-7300b124399a50b6",
@@ -148,36 +171,32 @@
   ],
   "quality": {
     "mode": "partial",
-    "captureTime": "2026-11-03T15:27:59Z",
+    "captureTime": "2026-11-03T15:38:57Z",
     "coverage": {
       "desksTotal": 8,
-      "desksWithCurrentStories": 2,
+      "desksWithCurrentStories": 4,
       "currentStoryDesks": [
         "lifestyle",
-        "news"
+        "news",
+        "science-tech",
+        "sports"
       ],
       "unavailableDesks": [
-        "sports",
-        "science-tech",
         "architecture-housing",
         "markets",
         "betting"
       ],
-      "configuredSources": 7,
-      "successfulSources": 4,
-      "failedSources": 3,
+      "configuredSources": 8,
+      "successfulSources": 6,
+      "failedSources": 2,
       "weatherLocationsConfigured": 2,
       "weatherLocationsValid": 2,
-      "stories": 3,
-      "slides": 13
+      "stories": 6,
+      "slides": 14
     },
     "errors": [
       {
         "source": "ESPN",
-        "code": "feed-invalid"
-      },
-      {
-        "source": "NASA",
         "code": "feed-invalid"
       },
       {
