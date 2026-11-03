@@ -14,6 +14,7 @@ import hashlib
 import ipaddress
 import json
 import os
+import re
 import secrets
 import socket
 import sys
@@ -279,6 +280,13 @@ def _story_id(url: str) -> str:
     return f"story-{digest}"
 
 
+class NoDoctypeTreeBuilder(ET.TreeBuilder):
+    """Reject real XML DTDs without mistaking HTML in CDATA for an XML DTD."""
+
+    def doctype(self, name: str, pubid: str | None, system: str | None) -> None:
+        raise FeedError("xml-declaration-forbidden")
+
+
 def parse_feed_xml(
     payload: bytes,
     label: str,
@@ -288,13 +296,20 @@ def parse_feed_xml(
 ) -> list[Story]:
     """Extract at most two fresh RSS/Atom titles without article content."""
     try:
-        upper_prefix = payload.decode("utf-8-sig").upper()
+        decoded = payload.decode("utf-8-sig")
     except UnicodeDecodeError as exc:
         raise FeedError("xml-encoding-invalid") from exc
-    if "<!DOCTYPE" in upper_prefix or "<!ENTITY" in upper_prefix:
-        raise FeedError("xml-declaration-forbidden")
+    if "\x00" in decoded:
+        raise FeedError("xml-encoding-invalid")
+    encoding = re.match(
+        r"""^<\?xml\s+[^?]*encoding\s*=\s*['"]([^'"]+)['"]""", decoded, re.IGNORECASE
+    )
+    if encoding and encoding.group(1).lower() not in {"utf-8", "utf8"}:
+        raise FeedError("xml-encoding-invalid")
     try:
-        root = ET.fromstring(payload)
+        root = ET.fromstring(
+            decoded, parser=ET.XMLParser(target=NoDoctypeTreeBuilder())
+        )
     except ET.ParseError as exc:
         raise FeedError("xml-malformed") from exc
     current = now.astimezone(UTC)

@@ -16,6 +16,13 @@
       "section": "Sports"
     },
     {
+      "label": "BBC Sport",
+      "url": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "host": "feeds.bbci.co.uk",
+      "desk": "sports",
+      "section": "Sports"
+    },
+    {
       "label": "NASA",
       "url": "https://www.nasa.gov/feed/",
       "host": "www.nasa.gov",

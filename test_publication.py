@@ -83,6 +83,58 @@ class PublicationTests(unittest.TestCase):
             ["Current"],
         )
 
+    def test_html_doctype_inside_rss_cdata_is_not_a_real_xml_dtd(self):
+        data = rss(
+            [
+                (
+                    "Current NASA headline",
+                    "https://www.nasa.gov/current",
+                    "Tue, 03 Nov 2026 13:00:00 GMT",
+                )
+            ]
+        )
+        data = data.replace(
+            b"</item>",
+            b"<description><![CDATA[<!DOCTYPE html><html>ARTICLE_BODY_NOT_COPIED</html>]]></description></item>",
+        )
+        stories = ge.parse_feed_xml(data, "NASA", "science-tech", "Science", NOW)
+        self.assertEqual(len(stories), 1)
+        self.assertNotIn("ARTICLE_BODY_NOT_COPIED", stories[0].headline)
+        with self.assertRaises(ge.FeedError):
+            ge.parse_feed_xml(
+                b'<!DOCTYPE rss SYSTEM "https://private.invalid/evil.dtd"><rss/>',
+                "NASA",
+                "science-tech",
+                "Science",
+                NOW,
+            )
+
+    def test_xml_encoding_cannot_be_redetected_after_utf8_decode(self):
+        data = rss(
+            [
+                (
+                    "ASCII",
+                    "https://www.nasa.gov/encoding-test",
+                    "Tue, 03 Nov 2026 13:00:00 GMT",
+                )
+            ]
+        ).decode()
+        bad = [
+            data.encode("utf-16le"),
+            data.encode("utf-16be"),
+            data.replace(
+                "<?xml version='1.0'?>", "<?xml version='1.0' encoding='ISO-8859-1'?>"
+            ).encode(),
+        ]
+        for payload in bad:
+            with self.subTest(payload=payload[:40]), self.assertRaises(ge.FeedError):
+                ge.parse_feed_xml(payload, "NASA", "science-tech", "Science", NOW)
+        good = data.replace("ASCII", "Café").encode("utf-8")
+        self.assertEqual(
+            ge.parse_feed_xml(good, "NASA", "science-tech", "Science", NOW)[0].headline,
+            "Café",
+        )
+
     def test_nested_unknown_fields_and_wrong_types_rejected(self):
         mutations = [
             lambda p: p["playback"].update(secret="PRIVATE_CANARY"),
