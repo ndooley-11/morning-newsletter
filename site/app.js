@@ -28,7 +28,12 @@
     secondsPerSlide: DEFAULT_SLIDE_SECONDS,
     refreshSeconds: DEFAULT_REFRESH_SECONDS,
     loadedOnce: false,
-    focusSuspend: false
+    focusSuspend: false,
+    view: 'snapshot',
+    model: null,
+    snapshotTotal: 0,
+    tickerPaused: false,
+    tickerKey: null
   };
 
   var slideTimerId = null;
@@ -72,7 +77,13 @@
     els.btnNext = qs('btn-next');
     els.btnReload = qs('btn-reload');
     els.btnFullscreen = qs('btn-fullscreen');
+    els.btnView = qs('btn-view');
     els.durationSelect = qs('duration-select');
+    els.ticker = qs('news-ticker');
+    els.tickerQuotes = qs('ticker-quotes');
+    els.tickerStatus = qs('ticker-status');
+    els.tickerWindow = qs('ticker-window');
+    els.btnTicker = qs('btn-ticker');
   }
 
   // ---------- Validation helpers ----------
@@ -126,7 +137,36 @@
     var playback = validatePlayback(json.playback);
     var weather = validateWeather(json.weather);
     var slides = validateSlides(json.slides);
-    return { edition: edition, playback: playback, weather: weather, slides: slides };
+    var snapshot = { maxImages: 1, imageIds: [] };
+    if (json.snapshot && typeof json.snapshot === 'object' && !Array.isArray(json.snapshot)) {
+      if (Number.isInteger(json.snapshot.maxImages)) snapshot.maxImages = Math.max(0, Math.min(2, json.snapshot.maxImages));
+      if (Array.isArray(json.snapshot.imageIds)) snapshot.imageIds = json.snapshot.imageIds.filter(function (id) { return isNonEmptyString(id, LEN.text); }).slice(0, 2);
+    }
+    return { edition: edition, playback: playback, weather: weather, slides: slides, snapshot: snapshot, ticker: validateTicker(json.ticker, slides) };
+  }
+
+  function validateTicker(raw, slides) {
+    var out = { quotes: [], headlineIds: [] };
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out;
+    if (Array.isArray(raw.headlineIds)) out.headlineIds = raw.headlineIds.filter(function (id) {
+      return typeof id === 'string' && slides.some(function (s) { return s.id === id && s.type === 'story'; });
+    }).slice(0, 6);
+    var seen = new Set();
+    if (Array.isArray(raw.quotes)) raw.quotes.slice(0, 8).forEach(function (q) {
+      if (!q || typeof q !== 'object' || typeof q.symbol !== 'string' || !/^[A-Z^][A-Z0-9.^-]{0,11}$/.test(q.symbol) || seen.has(q.symbol)) return;
+      if (!isNonEmptyString(q.label, 24) || typeof q.value !== 'number' || !isFinite(q.value) || q.value <= 0 || q.value > 1e9) return;
+      if (typeof q.asOf !== 'string') return;
+      var closingDate = q.session === 'close' && isValidIsoDate(q.asOf);
+      if (!closingDate && (!isValidIsoDate(q.asOf.slice(0, 10)) || !/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.test(q.asOf))) return;
+      var stamp = Date.parse(q.asOf);
+      if (!isFinite(stamp) || stamp > Date.now() + 300000) return;
+      var source = q.source && isSafeHttpsUrl(q.source.url);
+      if (!source || !isNonEmptyString(q.source.label, 60)) return;
+      var change = typeof q.changePercent === 'number' && isFinite(q.changePercent) && q.changePercent >= -100 && q.changePercent <= 10000 ? q.changePercent : null;
+      seen.add(q.symbol);
+      out.quotes.push({ symbol: q.symbol, label: q.label, value: q.value, changePercent: change, asOf: q.asOf, source: { label: q.source.label, url: source }, session: q.session === 'close' ? 'close' : 'snapshot' });
+    });
+    return out;
   }
 
   function validateEdition(e) {
@@ -288,7 +328,7 @@
 
   // ---------- Flatten into render slides (pagination) ----------
 
-  function buildRenderSlides(model) {
+  function buildStorySlides(model) {
     var out = [];
     for (var i = 0; i < model.slides.length; i++) {
       var s = model.slides[i];
@@ -334,6 +374,174 @@
 
   // ---------- Rendering ----------
 
+  function buildSnapshotCard(slide, showImage) {
+    var card = makeEl('article', { className: 'snapshot-card' + (showImage ? ' snapshot-lead' : '') + (!slide.source ? ' snapshot-notice' : '') });
+    card.dataset.storyId = slide.id;
+    card.dataset.desk = slide.desk;
+    var heading = makeEl('h3', { className: 'snapshot-headline' });
+    if (slide.source) {
+      var link = makeEl('a', { text: slide.headline });
+      link.href = slide.source.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      heading.appendChild(link);
+    } else {
+      heading.textContent = slide.headline;
+    }
+    card.appendChild(heading);
+    if (showImage) {
+      var figure = buildImageFigure(slide.image);
+      figure.classList.add('snapshot-photo');
+      figure.querySelector('img').loading = 'eager';
+      figure.querySelector('img').decoding = 'sync';
+      var caption = figure.querySelector('figcaption');
+      while (caption.firstChild) caption.removeChild(caption.firstChild);
+      caption.appendChild(makeEl('span', { text: slide.image.caption }));
+      var credit = makeEl('span', { className: 'snapshot-credit' });
+      var author = makeEl(slide.image.sourceUrl ? 'a' : 'span', { text: slide.image.credit });
+      if (slide.image.sourceUrl) { author.href = slide.image.sourceUrl; author.rel = 'noopener noreferrer'; author.target = '_blank'; }
+      credit.appendChild(author);
+      credit.appendChild(document.createTextNode(' · '));
+      var license = makeEl(slide.image.licenseUrl ? 'a' : 'span', { text: slide.image.license });
+      if (slide.image.licenseUrl) { license.href = slide.image.licenseUrl; license.rel = 'noopener noreferrer'; license.target = '_blank'; }
+      credit.appendChild(license);
+      caption.appendChild(credit);
+      var notes = makeEl('details', { className: 'snapshot-photo-notes' });
+      notes.appendChild(makeEl('summary', { text: 'Photo notes' }));
+      notes.appendChild(makeEl('p', { text: slide.image.changes }));
+      caption.appendChild(notes);
+      var oldLinks = figure.querySelector('.image-links');
+      if (oldLinks) oldLinks.remove();
+      card.appendChild(figure);
+    }
+    var meta = slide.source ? slide.section : 'Coverage notice · ' + slide.section;
+    if (slide.source) {
+      meta += ' · ' + slide.source.label;
+      var dateMatch = slide.source.asOf.match(/\d{4}-\d{2}-\d{2}/);
+      if (dateMatch) meta += ' · ' + dateMatch[0];
+    }
+    var source = makeEl('p', { className: 'snapshot-meta', text: meta });
+    if (slide.source) source.title = slide.source.asOf;
+    card.appendChild(source);
+    return card;
+  }
+
+  function snapshotDeskLabel(desk) {
+    var key = desk.toLowerCase();
+    return { 'science tech': 'Science & technology', 'architecture housing': 'Architecture & housing' }[key] || desk.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function fillSnapshotColumn(column, entry, previousDesk) {
+    var added = [];
+    if (entry.slide.desk !== previousDesk) {
+      var heading = makeEl('h2', { className: 'snapshot-desk', text: snapshotDeskLabel(entry.slide.desk) + (entry.continued ? ' (continued)' : '') });
+      column.appendChild(heading);
+      added.push(heading);
+    }
+    var card = buildSnapshotCard(entry.slide, entry.showImage);
+    column.appendChild(card);
+    added.push(card);
+    return added;
+  }
+
+  function packSnapshotPages(stories, selected, count, phone) {
+    if (!stories.length) return [];
+    var measure = makeEl('div', { className: 'snapshot-board snapshot-measure columns-' + count });
+    measure.setAttribute('aria-hidden', 'true');
+    els.slideStage.appendChild(measure);
+    var measuringColumn = makeEl('div', { className: 'snapshot-column' });
+    measure.appendChild(measuringColumn);
+    var limit = phone ? Infinity : Math.max(200, els.slideStage.clientHeight - 4);
+    var pages = [];
+    var columns = [[]];
+    var currentColumn = 0;
+    var lastDesk = null;
+    try {
+      stories.forEach(function (slide) {
+        var entry = { slide: slide, showImage: selected.indexOf(slide.id) !== -1, continued: false };
+        var added = fillSnapshotColumn(measuringColumn, entry, lastDesk);
+        if (measuringColumn.scrollHeight > limit && columns[currentColumn].length) {
+          added.forEach(function (node) { node.remove(); });
+          currentColumn++;
+          if (currentColumn >= count) {
+            pages.push({ type: 'snapshot', id: 'snapshot:' + columns[0][0].slide.id, columns: columns, columnCount: count });
+            columns = [[]];
+            currentColumn = 0;
+          } else {
+            columns.push([]);
+            entry.continued = lastDesk === slide.desk;
+          }
+          while (measuringColumn.firstChild) measuringColumn.removeChild(measuringColumn.firstChild);
+          fillSnapshotColumn(measuringColumn, entry, null);
+        }
+        columns[currentColumn].push(entry);
+        lastDesk = slide.desk;
+      });
+      if (columns[0].length) pages.push({ type: 'snapshot', id: 'snapshot:' + columns[0][0].slide.id, columns: columns, columnCount: count });
+    } finally {
+      measure.remove();
+    }
+    return pages;
+  }
+
+  function buildSnapshotSlides(model) {
+    var width = window.innerWidth;
+    var count = width >= 1700 ? 5 : width >= 1200 ? 4 : width >= 900 ? 3 : 1;
+    var phone = width < 900;
+    var stories = model.slides.slice();
+    state.snapshotTotal = stories.length;
+    var candidates = stories.filter(function (slide) { return !!slide.image && !!slide.source; });
+    if (model.snapshot.imageIds.length) candidates = candidates.filter(function (slide) { return model.snapshot.imageIds.indexOf(slide.id) !== -1; });
+    var selected = candidates.slice(0, model.snapshot.maxImages).map(function (slide) { return slide.id; });
+    var all = packSnapshotPages(stories, selected, count, phone);
+    if (phone || all.length < 2) return all;
+
+    // Front page represents every desk before spending space on extra headlines.
+    var groups = [];
+    stories.forEach(function (slide) {
+      var group = groups.find(function (g) { return g.desk === slide.desk; });
+      if (!group) { group = { desk: slide.desk, slides: [], take: 1 }; groups.push(group); }
+      group.slides.push(slide);
+    });
+    function frontStories() {
+      return groups.reduce(function (items, group) { return items.concat(group.slides.slice(0, group.take)); }, []);
+    }
+    var front = packSnapshotPages(frontStories(), selected, count, false);
+    if (front.length > 1) return all;
+    var changed = true;
+    while (changed) {
+      changed = false;
+      groups.forEach(function (group) {
+        if (group.take >= group.slides.length) return;
+        group.take++;
+        var trial = packSnapshotPages(frontStories(), selected, count, false);
+        if (trial.length === 1) { front = trial; changed = true; }
+        else group.take--;
+      });
+    }
+    var included = new Set(frontStories().map(function (slide) { return slide.id; }));
+    var remaining = stories.filter(function (slide) { return !included.has(slide.id); });
+    return front.concat(packSnapshotPages(remaining, selected, count, false));
+  }
+
+  function buildRenderSlides(model) {
+    return state.view === 'snapshot' ? buildSnapshotSlides(model) : buildStorySlides(model);
+  }
+
+  function renderSnapshot(page) {
+    var board = makeEl('div', { className: 'snapshot-board columns-' + page.columnCount });
+    page.columns.forEach(function (entries) {
+      var column = makeEl('div', { className: 'snapshot-column' });
+      var previousDesk = null;
+      entries.forEach(function (entry) {
+        fillSnapshotColumn(column, entry, previousDesk);
+        previousDesk = entry.slide.desk;
+      });
+      board.appendChild(column);
+    });
+    els.slideStage.appendChild(board);
+  }
+
   function clearStage() {
     while (els.slideStage.firstChild) {
       els.slideStage.removeChild(els.slideStage.firstChild);
@@ -353,6 +561,13 @@
     clearStage();
     var slide = state.renderSlides[state.currentIndex];
     if (!slide) return;
+
+    if (slide.type === 'snapshot') {
+      els.currentSection.textContent = 'Morning snapshot · ' + state.snapshotTotal + ' headlines';
+      els.slideCounter.textContent = (state.currentIndex + 1) + ' / ' + state.renderSlides.length;
+      renderSnapshot(slide);
+      return;
+    }
 
     els.currentSection.textContent = slide.section;
     els.slideCounter.textContent = (state.currentIndex + 1) + ' / ' + state.renderSlides.length;
@@ -459,7 +674,7 @@
   }
 
   function renderMasthead(model) {
-    els.editionTitle.textContent = model.edition.title;
+    els.editionTitle.textContent = model.edition.title + (model.edition.subtitle ? ' — ' + model.edition.subtitle : '');
     els.editionDate.textContent = 'Issue dated ' + model.edition.date;
   }
 
@@ -477,6 +692,76 @@
 
   function setStatus(message) {
     els.editionStatus.textContent = message;
+  }
+
+  // Public, timestamped snapshots only. No quote API or credentials in the viewer.
+  function updateTickerMotion() {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var stopped = state.paused || state.tickerPaused || reduced || document.hidden;
+    els.ticker.classList.toggle('ticker-stopped', stopped);
+    els.btnTicker.textContent = state.paused || reduced ? 'Ticker paused' : state.tickerPaused ? 'Resume ticker' : 'Pause ticker';
+    els.btnTicker.setAttribute('aria-pressed', String(stopped));
+    els.btnTicker.disabled = state.paused || reduced;
+    els.btnTicker.title = reduced ? 'Motion is disabled by your reduced-motion preference. Scroll the headlines instead.' : state.paused ? 'Resume playback to enable ticker motion.' : '';
+  }
+
+  function renderTicker(model) {
+    var markets = model.slides.filter(function (s) { return s.type === 'story' && s.source && s.desk.toLowerCase() === 'markets'; });
+    var priority = model.ticker.headlineIds.length
+      ? model.ticker.headlineIds.map(function (id) { return model.slides.find(function (s) { return s.id === id; }); })
+      : model.slides.filter(function (s) { return s.type === 'story' && s.source && s.desk.toLowerCase() === 'news'; }).slice(0, 4);
+    var items = priority.concat(markets).filter(function (s, i, all) { return s && s.source && all.findIndex(function (other) { return other && other.id === s.id; }) === i; }).slice(0, 9);
+    var key = JSON.stringify([model.edition.date, model.ticker, items]);
+    if (key === state.tickerKey) { updateTickerMotion(); return; }
+    state.tickerKey = key;
+    while (els.tickerQuotes.firstChild) els.tickerQuotes.removeChild(els.tickerQuotes.firstChild);
+    while (els.tickerWindow.firstChild) els.tickerWindow.removeChild(els.tickerWindow.firstChild);
+    var symbols = [{ symbol: 'SPX', label: 'S&P 500' }, { symbol: 'COMP', label: 'Nasdaq' }];
+    model.ticker.quotes.forEach(function (q) {
+      var existing = symbols.find(function (s) { return s.symbol === q.symbol; });
+      if (existing) existing.label = q.label;
+      else if (symbols.length < 8) symbols.push({ symbol: q.symbol, label: q.label });
+    });
+    markets.forEach(function (s) {
+      var match = s.headline.match(/\(([A-Z][A-Z0-9.-]{0,9})\)/);
+      if (match && symbols.length < 8 && !symbols.some(function (q) { return q.symbol === match[1]; })) symbols.push({ symbol: match[1], label: match[1] });
+    });
+    symbols.forEach(function (s) {
+      var q = model.ticker.quotes.find(function (candidate) { return candidate.symbol === s.symbol; });
+      var chip = makeEl('div', { className: 'ticker-quote' });
+      chip.dataset.symbol = s.symbol;
+      chip.appendChild(makeEl('strong', { text: s.label }));
+      if (q) {
+        var link = makeEl('a', { text: q.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) });
+        link.href = q.source.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.title = q.source.label + ' · ' + q.asOf;
+        chip.appendChild(link);
+        if (q.changePercent !== null) chip.appendChild(makeEl('span', { className: q.changePercent < 0 ? 'ticker-down' : 'ticker-up', text: (q.changePercent < 0 ? '▼ ' : q.changePercent > 0 ? '▲ +' : '') + q.changePercent.toLocaleString('en-US', { maximumFractionDigits: 2 }) + '%' }));
+        var time = makeEl('time', { text: q.asOf.slice(5, 10).replace('-', '/') + ' ' + (q.session === 'close' ? 'close' : 'snapshot') });
+        time.dateTime = q.asOf; time.title = q.asOf + ' · ' + q.source.label;
+        chip.appendChild(time);
+      } else chip.appendChild(makeEl('span', { className: 'ticker-unavailable', text: s.symbol === 'SPX' || s.symbol === 'COMP' ? 'Quote unavailable' : 'News only' }));
+      els.tickerQuotes.appendChild(chip);
+    });
+    els.tickerStatus.textContent = model.ticker.quotes.length ? 'Dated snapshot · not live' : 'Public headlines · quotes unavailable';
+    var track = makeEl('div', { className: 'ticker-track' });
+    for (var copy = 0; copy < 2; copy++) {
+      var group = makeEl('div', { className: 'ticker-group' });
+      if (copy) group.setAttribute('aria-hidden', 'true');
+      items.forEach(function (s) {
+        var item = makeEl(s.source ? 'a' : 'span', { className: 'ticker-headline', text: s.headline });
+        if (s.source) { item.href = s.source.url; item.target = '_blank'; item.rel = 'noopener noreferrer'; }
+        if (copy) item.setAttribute('tabindex', '-1');
+        item.title = 'Edition ' + model.edition.date + (s.source ? ' · ' + s.source.label + ' · ' + s.source.asOf : '');
+        item.dataset.storyId = s.id;
+        group.appendChild(item);
+      });
+      if (!items.length) group.appendChild(makeEl('span', { className: 'ticker-headline', text: 'No priority headlines supplied for this edition.' }));
+      track.appendChild(group);
+    }
+    els.tickerWindow.appendChild(track);
+    els.ticker.hidden = false;
+    updateTickerMotion();
   }
 
   // ---------- Timers ----------
@@ -517,6 +802,7 @@
     state.paused = paused;
     els.btnPause.textContent = paused ? 'Resume' : 'Pause';
     els.btnPause.setAttribute('aria-pressed', String(paused));
+    updateTickerMotion();
     armSlideTimer();
   }
 
@@ -557,11 +843,16 @@
       ? state.renderSlides[state.currentIndex].id
       : null;
 
+    state.model = model;
+    els.tvFrame.classList.toggle('snapshot-mode', state.view === 'snapshot');
+    renderMasthead(model);
+    renderWeather(model);
+    renderTicker(model);
     var newRenderSlides = buildRenderSlides(model);
 
     state.renderSlides = newRenderSlides;
     state.editionId = model.edition.id;
-    state.secondsPerSlide = durationOverride || model.playback.secondsPerSlide;
+    state.secondsPerSlide = durationOverride || (state.view === 'snapshot' ? Math.max(30, model.playback.secondsPerSlide) : model.playback.secondsPerSlide);
     els.durationSelect.value = String(state.secondsPerSlide);
     state.refreshSeconds = model.playback.refreshSeconds;
 
@@ -683,7 +974,8 @@
 
   function onKeydown(e) {
     var target = e.target;
-    if (isFormControl(target)) return;
+    if (target.closest && target.closest('.news-ticker')) return;
+    if (isFormControl(target) || e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       navigate(1);
@@ -716,6 +1008,7 @@
   }
 
   function onVisibilityChange() {
+    updateTickerMotion();
     if (document.hidden) {
       clearSlideTimer();
     } else {
@@ -725,6 +1018,16 @@
   }
 
   function wireEvents() {
+    els.btnTicker.addEventListener('click', function () { state.tickerPaused = !state.tickerPaused; updateTickerMotion(); });
+    var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motionQuery.addEventListener) motionQuery.addEventListener('change', updateTickerMotion);
+    else if (motionQuery.addListener) motionQuery.addListener(updateTickerMotion);
+    els.btnView.addEventListener('click', function () {
+      state.view = state.view === 'snapshot' ? 'story' : 'snapshot';
+      els.btnView.textContent = state.view === 'snapshot' ? 'Story view' : 'Snapshot';
+      state.currentIndex = 0;
+      if (state.model) applyModel(state.model, false);
+    });
     els.btnPrev.addEventListener('click', function () { navigate(-1); });
     els.btnNext.addEventListener('click', function () { navigate(1); });
     els.btnPause.addEventListener('click', function () { setPaused(!state.paused); });
@@ -742,6 +1045,13 @@
     els.slideStage.addEventListener('focusin', onFocusIn);
     els.slideStage.addEventListener('focusout', onFocusOut);
     document.addEventListener('visibilitychange', onVisibilityChange);
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (state.model && state.view === 'snapshot') applyModel(state.model, false);
+      }, 180);
+    });
     if (!fullscreenSupported()) {
       els.btnFullscreen.disabled = true;
       els.btnFullscreen.title = 'Fullscreen is not supported in this browser.';

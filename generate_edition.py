@@ -723,11 +723,11 @@ def generate_to_path(
 def scheduled_gate(
     now: datetime, existing_date: str | None, force: bool
 ) -> tuple[bool, str]:
-    """Apply the 07:00–10:59 America/New_York schedule and duplicate gate."""
+    """Apply the 06:00–10:59 America/New_York schedule and duplicate gate."""
     if force:
         return True, "forced"
     local = now.astimezone(EASTERN)
-    if not 7 <= local.hour < 11:
+    if not 6 <= local.hour < 11:
         return False, "outside-window"
     if existing_date == local.date().isoformat():
         return False, "already-generated"
@@ -741,7 +741,7 @@ def _existing_success_date(output: Path, now: datetime) -> str | None:
         captured = parse_iso_datetime(document["edition"]["generatedAt"]).astimezone(
             EASTERN
         )
-        if captured.hour < 7:
+        if captured.hour < 6:
             return None
         if document.get("schemaVersion") != 1:
             return None
@@ -785,7 +785,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--now", help="Aware ISO timestamp; intended for deterministic tests"
     )
     parser.add_argument(
-        "--scheduled", action="store_true", help="Enforce the Eastern 07:00–10:59 gate"
+        "--scheduled", action="store_true", help="Enforce the Eastern 06:00–10:59 gate"
     )
     parser.add_argument(
         "--force", action="store_true", help="Bypass schedule and same-date gates"

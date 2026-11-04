@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>The Morning Edition — TV Viewer</title>
 <link rel="stylesheet" href="./styles.css">
@@ -36,6 +37,7 @@
 
   <footer class="controls-bar">
     <div class="controls" role="group" aria-label="Playback controls">
+      <button type="button" id="btn-view">Story view</button>
       <button type="button" id="btn-prev">Previous</button>
       <button type="button" id="btn-pause" aria-pressed="false">Pause</button>
       <button type="button" id="btn-next">Next</button>
@@ -45,9 +47,9 @@
         <label for="duration-select">Slide duration</label>
         <select id="duration-select">
           <option value="8">8s</option>
-          <option value="12" selected>12s</option>
+          <option value="12">12s</option>
           <option value="20">20s</option>
-          <option value="30">30s</option>
+          <option value="30" selected>30s</option>
           <option value="60">60s</option>
         </select>
       </span>
@@ -57,11 +59,23 @@
       <span>Space pause / resume</span>
       <span>F fullscreen</span>
     </div>
-    <p class="disclosure">
+    <p class="disclosure" id="coverage-disclosure">
       For research and informational purposes only — not investment, trading, or wagering advice. No automated trades or wagers are placed.
+      Coverage: public RSS headlines and NWS weather. Market quotes and photos unavailable in this edition.
       <a href="https://nicolasdooley.com/" rel="noopener noreferrer">Back to portfolio</a>
     </p>
   </footer>
+  <aside class="news-ticker" id="news-ticker" aria-label="Market availability and priority headlines" hidden>
+    <div class="ticker-market-row">
+      <div class="ticker-quotes" id="ticker-quotes" aria-label="Unavailable market quotes"></div>
+      <span class="ticker-status" id="ticker-status">Public headlines · quotes unavailable</span>
+      <button type="button" id="btn-ticker" aria-pressed="false">Pause ticker</button>
+    </div>
+    <div class="ticker-news-row">
+      <span class="ticker-label">Top stories</span>
+      <div class="ticker-window" id="ticker-window" tabindex="0" aria-label="Priority sourced headlines; scroll when paused"></div>
+    </div>
+  </aside>
 </div>
 
 <script src="./app.js" defer></script>

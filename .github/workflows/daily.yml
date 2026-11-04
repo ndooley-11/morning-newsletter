@@ -14,7 +14,7 @@ name: Daily newsletter
         type: boolean
         default: true
   schedule:
-    - cron: '17 11,12 * * *'
+    - cron: '17 10,11 * * *'
 
 concurrency:
   group: pages-daily

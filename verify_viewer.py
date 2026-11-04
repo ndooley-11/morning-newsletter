@@ -31,22 +31,19 @@ def check(url: str, screenshot: Path) -> dict[str, object]:
         response = page.goto(url)
         assert response and response.ok
         expect(page.locator("#slide-counter")).to_have_text(re.compile(r"1 / [1-9]\d*"))
+        page.get_by_role("button", name="Story view", exact=True).click()
         page.get_by_role("button", name="Pause", exact=True).click()
         counter = page.locator("#slide-counter")
         total = int(counter.inner_text().split("/")[1])
-        # Measure every slide at all target TV sizes, not just the opening slide.
+        # Detailed reading may scroll. Strict snapshot TV bounds are covered
+        # separately by verify_snapshot_cloud.py.
         for width, height in ((1920, 1080), (1366, 768), (1280, 720)):
             page.set_viewport_size({"width": width, "height": height})
             for _ in range(total):
                 assert not page.evaluate(
                     "document.documentElement.scrollWidth > innerWidth+1"
                 ), (width, counter.inner_text())
-                assert not page.evaluate(
-                    "document.documentElement.scrollHeight > innerHeight+1"
-                ), (height, counter.inner_text())
-                assert not page.evaluate(
-                    "document.querySelector('#slide-stage').scrollHeight > document.querySelector('#slide-stage').clientHeight+1"
-                ), ("stage overflow", width, counter.inner_text())
+
                 page.get_by_role("button", name="Next", exact=True).click()
         page.set_viewport_size({"width": 1920, "height": 1080})
         screenshot.parent.mkdir(parents=True, exist_ok=True)
@@ -100,6 +97,8 @@ def check(url: str, screenshot: Path) -> dict[str, object]:
         injected["private"] = {"subject": "PRIVATE_TEST_CANARY_001"}
         page.route("**/content.json", lambda route: route.fulfill(json=injected))
         page.reload()
+        expect(page.locator("#slide-counter")).to_have_text(re.compile(r"1 / [1-9]\d*"))
+        page.get_by_role("button", name="Story view", exact=True).click()
         expect(page.locator("#slide-stage h2")).to_have_text(
             injected["slides"][0]["headline"]
         )

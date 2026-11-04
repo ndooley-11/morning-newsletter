@@ -206,7 +206,6 @@ select:focus-visible,
   font-size: clamp(1.1rem, 2vw, 1.9rem);
   line-height: 1.5;
   max-width: 44em;
-  margin: 0.5em 0;
 }
 
 .source-line {
@@ -358,14 +357,6 @@ figcaption {
   margin-left: 0.4rem;
 }
 
-@media (min-width: 1000px) {
-  .tv-frame { height: 100vh; }
-  .headline { font-size: clamp(1.8rem, 3.2vw, 3.3rem); }
-  .weather-card { flex: 1; min-width: 0; }
-  .masthead-titles { gap: 0.6rem; }
-  .story-text .summary { line-height: 1.35; }
-}
-
 @media (max-width: 900px) {
   .story-split {
     grid-template-columns: 1fr;
@@ -401,4 +392,112 @@ figcaption {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* Morning snapshot: headline density, not smaller reading type. */
+.snapshot-mode { height: 100vh; min-height: 0; max-width: 1920px; padding: 24px 32px 18px; gap: 12px; background: var(--newsprint); }
+.snapshot-mode #edition-title { font-size: clamp(25px, 1.9vw, 36px); letter-spacing: -.025em; }
+.snapshot-mode .masthead-row { gap: 6px 20px; }
+.snapshot-mode .edition-date { font-size: 12px; text-transform: none; letter-spacing: 0; }
+.snapshot-mode .edition-status { font-size: 12px; }
+.snapshot-mode .weather-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 9px; }
+.snapshot-mode .weather-card { font-size: 13px; gap: 2px; }
+.snapshot-mode .weather-summary { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.snapshot-mode .section-row { font-size: 12px; letter-spacing: 0; text-transform: none; padding: 0 0 10px; }
+.snapshot-mode .slide-stage { position: relative; padding: 0; border: 0; background: transparent; overflow: visible; }
+.snapshot-board { display: grid; gap: 0; width: 100%; align-items: start; }
+.columns-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.columns-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.columns-1 { grid-template-columns: minmax(0, 1fr); }
+.snapshot-column { min-width: 0; padding: 0 15px; border-left: 1px solid var(--rule); }
+.snapshot-column:first-child { border-left-color: transparent; }
+.snapshot-desk { font: 700 clamp(15px, 1vw, 19px)/1.25 system-ui, sans-serif; color: var(--accent); margin: 0; padding: 8px 0 9px; border-top: 3px solid var(--accent); overflow-wrap: anywhere; }
+.snapshot-desk:not(:first-child) { margin-top: 14px; }
+.snapshot-card { padding: 10px 0 11px; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+.snapshot-headline { margin: 0; font: 700 clamp(20px, 1.2vw, 24px)/1.17 Georgia, serif; letter-spacing: -.018em; overflow-wrap: anywhere; }
+.snapshot-headline a { color: var(--ink); text-decoration: none; }
+.snapshot-headline a:hover { text-decoration: underline; }
+.snapshot-lead .snapshot-headline { font-size: clamp(23px, 1.45vw, 28px); }
+.snapshot-meta { margin: 6px 0 0; font: 11px/1.35 system-ui, sans-serif; color: var(--secondary); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.snapshot-photo { gap: 5px; margin-top: 10px; }
+.snapshot-photo img { width: 100%; height: clamp(85px, 12vh, 135px); max-height: none; object-fit: cover; }
+.snapshot-photo .archive-label { font: 700 10px/1.3 system-ui, sans-serif; text-transform: none; letter-spacing: 0; }
+.snapshot-photo figcaption { font: 11px/1.35 system-ui, sans-serif; }
+.snapshot-credit { display: block; margin-top: 5px; }
+.snapshot-photo-notes { margin-top: 5px; }
+.snapshot-photo-notes summary { cursor: pointer; }
+.snapshot-photo-notes p { margin: 5px 0 0; }
+.snapshot-measure { position: absolute; inset: 0; visibility: hidden; pointer-events: none; }
+.snapshot-mode .controls-bar { gap: 5px; padding-top: 8px; border-top: 2px solid var(--accent); }
+.snapshot-mode .controls { gap: 8px; }
+.snapshot-mode .controls button, .snapshot-mode .controls select { font-size: 12px; padding: 7px 12px; border-radius: 0; min-height: 34px; }
+.snapshot-mode #btn-view { background: transparent; color: var(--accent); }
+.snapshot-mode .keyboard-help { display: none; }
+.snapshot-mode .disclosure { font-size: 12px; line-height: 1.35; }
+.snapshot-mode .duration-field { font-size: 11px; }
+
+/* A quiet market strip above the contrasting broadcast-style headline crawl. */
+.news-ticker { flex-shrink: 0; position: sticky; bottom: 0; z-index: 2; min-width: 0; width: 100%; background: var(--newsprint); border: 1px solid var(--rule); font-family: system-ui, sans-serif; }
+.news-ticker[hidden] { display: none; }
+.ticker-market-row { display: flex; align-items: center; gap: 14px; padding: 8px 12px; }
+.ticker-quotes { display: flex; flex: 1; min-width: 0; gap: 15px; overflow-x: auto; scrollbar-width: none; }
+.ticker-quote { display: flex; align-items: baseline; gap: 7px; white-space: nowrap; padding-right: 15px; border-right: 1px solid var(--rule); font-size: clamp(13px, .9vw, 17px); font-variant-numeric: tabular-nums; }
+.ticker-quote:last-child { border-right: 0; }
+.ticker-quote a { color: var(--ink); font-weight: 650; text-decoration: none; }
+.ticker-quote a:hover { text-decoration: underline; }
+.ticker-quote time, .ticker-unavailable { color: var(--secondary); font-size: 12px; }
+.ticker-up { color: #245c45; }
+.ticker-down { color: #9d3540; }
+.ticker-status { font-size: 12px; color: var(--secondary); white-space: nowrap; }
+#btn-ticker { border: 1px solid var(--rule); padding: 5px 9px; background: var(--surface); color: var(--ink); font-size: 11px; white-space: nowrap; cursor: pointer; }
+#btn-ticker:disabled { cursor: default; }
+.ticker-news-row { display: flex; align-items: center; gap: 14px; padding: 10px 12px; background: #243b5a; color: #faf8f2; }
+.ticker-label { flex-shrink: 0; padding-right: 14px; border-right: 1px solid #8ba7d2; font-size: 13px; font-weight: 700; }
+.ticker-window { flex: 1; min-width: 0; overflow: hidden; scrollbar-width: none; }
+.ticker-track { display: flex; width: max-content; animation: headline-crawl 100s linear infinite; }
+.ticker-group { display: flex; align-items: center; gap: 32px; padding-right: 32px; }
+.ticker-headline { color: #faf8f2; white-space: nowrap; text-decoration: none; font-size: clamp(16px, 1vw, 20px); line-height: 1.4; }
+.ticker-headline::before { content: '•'; margin-right: 32px; color: #a8bdd9; }
+a.ticker-headline:hover { text-decoration: underline; }
+.ticker-stopped .ticker-track, .ticker-window:hover .ticker-track { animation-play-state: paused; }
+.ticker-stopped .ticker-window, .ticker-window:hover, .ticker-window:focus-within { overflow-x: auto; }
+.ticker-window:focus-within .ticker-track { animation: none; transform: none; }
+@keyframes headline-crawl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-color-scheme: dark) {
+  .ticker-up { color: #9cd7b8; }
+  .ticker-down { color: #ffb1b8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; transform: none; }
+}
+@media (max-width: 899px) {
+  .ticker-market-row { flex-wrap: wrap; gap: 8px; padding: 8px; }
+  .ticker-quotes { flex-basis: 100%; }
+  .ticker-status { flex: 1; }
+  #btn-ticker { min-height: 44px; }
+  .ticker-news-row { padding: 10px 8px; gap: 8px; }
+  .ticker-label { font-size: 11px; padding-right: 8px; }
+  .ticker-headline { font-size: 16px; }
+}
+@media (max-width: 1399px) and (min-width: 900px) {
+  .snapshot-mode { padding: 16px 20px 12px; gap: 9px; }
+  .snapshot-column { padding-inline: 12px; }
+  .snapshot-mode #edition-title { font-size: 26px; }
+  .snapshot-mode .masthead-titles { gap: 5px 14px; }
+  .snapshot-mode .weather-card { font-size: 11px; }
+  .snapshot-headline { font-size: 20px; }
+  .snapshot-card { padding-block: 8px; }
+}
+@media (max-width: 899px) {
+  .snapshot-mode { height: auto; min-height: 100vh; padding: 20px; }
+  .snapshot-mode .weather-strip { grid-template-columns: 1fr; gap: 10px; }
+  .snapshot-mode .weather-summary { white-space: normal; }
+  .snapshot-column { padding-inline: 0; border-left: 0; }
+  .snapshot-desk:not(:first-child) { margin-top: 24px; }
+  .snapshot-headline { font-size: 22px; }
+  .snapshot-photo { max-width: 500px; }
+  .snapshot-photo img { height: 180px; }
+  .snapshot-mode .controls button, .snapshot-mode .controls select { min-height: 44px; }
+  .snapshot-mode .controls-bar { margin-top: 20px; }
 }

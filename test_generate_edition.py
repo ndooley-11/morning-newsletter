@@ -87,23 +87,46 @@ class UrlValidationTests(unittest.TestCase):
 
 
 class SchedulingTests(unittest.TestCase):
-    def test_dst_aware_gate_accepts_7am_in_winter_and_summer(self) -> None:
-        winter = datetime(2026, 1, 15, 12, 0, tzinfo=UTC)
-        summer = datetime(2026, 7, 15, 11, 0, tzinfo=UTC)
+    def test_dst_aware_gate_accepts_6am_in_winter_and_summer(self) -> None:
+        winter = datetime(2026, 1, 15, 11, 17, tzinfo=UTC)
+        summer = datetime(2026, 7, 15, 10, 17, tzinfo=UTC)
         self.assertEqual(ge.scheduled_gate(winter, None, False), (True, "run"))
         self.assertEqual(ge.scheduled_gate(summer, None, False), (True, "run"))
 
-    def test_gate_rejects_outside_window_and_duplicate_but_force_runs(self) -> None:
-        before = datetime(2026, 7, 15, 10, 59, tzinfo=UTC)
-        after = datetime(2026, 7, 15, 15, 0, tzinfo=UTC)
-        in_window = datetime(2026, 7, 15, 12, 0, tzinfo=UTC)
-        self.assertEqual(ge.scheduled_gate(before, None, False)[0], False)
-        self.assertEqual(ge.scheduled_gate(after, None, False)[0], False)
+    def test_gate_boundaries_are_6am_inclusive_and_11am_exclusive(self) -> None:
+        before = datetime(2026, 1, 15, 10, 59, tzinfo=UTC)
+        opening = datetime(2026, 1, 15, 11, 0, tzinfo=UTC)
+        closing = datetime(2026, 1, 15, 15, 59, tzinfo=UTC)
+        after = datetime(2026, 1, 15, 16, 0, tzinfo=UTC)
         self.assertEqual(
-            ge.scheduled_gate(in_window, "2026-07-15", False),
+            ge.scheduled_gate(before, None, False), (False, "outside-window")
+        )
+        self.assertEqual(ge.scheduled_gate(opening, None, False), (True, "run"))
+        self.assertEqual(ge.scheduled_gate(closing, None, False), (True, "run"))
+        self.assertEqual(
+            ge.scheduled_gate(after, None, False), (False, "outside-window")
+        )
+
+    def test_duplicate_gate_handles_the_two_dst_covering_cron_runs(self) -> None:
+        summer_first = datetime(2026, 7, 15, 10, 17, tzinfo=UTC)
+        summer_second = datetime(2026, 7, 15, 11, 17, tzinfo=UTC)
+        winter_first = datetime(2026, 1, 15, 10, 17, tzinfo=UTC)
+        winter_second = datetime(2026, 1, 15, 11, 17, tzinfo=UTC)
+
+        self.assertEqual(ge.scheduled_gate(summer_first, None, False), (True, "run"))
+        self.assertEqual(
+            ge.scheduled_gate(summer_second, "2026-07-15", False),
             (False, "already-generated"),
         )
-        self.assertEqual(ge.scheduled_gate(after, "2026-07-15", True), (True, "forced"))
+        self.assertEqual(
+            ge.scheduled_gate(winter_first, None, False),
+            (False, "outside-window"),
+        )
+        self.assertEqual(ge.scheduled_gate(winter_second, None, False), (True, "run"))
+        self.assertEqual(
+            ge.scheduled_gate(winter_first, "2026-01-15", True),
+            (True, "forced"),
+        )
 
 
 class FeedParsingTests(unittest.TestCase):

@@ -5,7 +5,9 @@ from __future__ import annotations
 import copy
 import json
 import tempfile
+import textwrap
 import unittest
+from datetime import UTC, datetime
 from pathlib import Path
 
 import generate_edition as ge
@@ -163,21 +165,57 @@ class PublicationTests(unittest.TestCase):
                 validate_edition(value, now=NOW)
 
     def test_midnight_manual_edition_does_not_suppress_morning_refresh(self):
-        from datetime import UTC, datetime
-
         fixture = fixtures.GenerationTests()
-        mapping = fixture.mapping()
-        for key, value in mapping.items():
+        midnight_mapping = fixture.mapping()
+        for key, value in midnight_mapping.items():
             if isinstance(value, bytes):
-                mapping[key] = value.replace(b"13:00:00", b"04:30:00")
+                midnight_mapping[key] = value.replace(b"13:00:00", b"04:30:00")
         midnight = datetime(2026, 11, 3, 5, 30, tzinfo=UTC)
-        edition = ge.build_edition(fixture.config(), midnight, MemoryFetcher(mapping))
+        midnight_edition = ge.build_edition(
+            fixture.config(), midnight, MemoryFetcher(midnight_mapping)
+        )
+
+        morning_mapping = fixture.mapping()
+        for key, value in morning_mapping.items():
+            if isinstance(value, bytes):
+                morning_mapping[key] = value.replace(b"13:00:00", b"10:00:00")
+        morning = datetime(2026, 11, 3, 11, 0, tzinfo=UTC)
+        morning_edition = ge.build_edition(
+            fixture.config(), morning, MemoryFetcher(morning_mapping)
+        )
+
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "content.json"
-            output.write_text(json.dumps(edition), encoding="utf-8")
-            self.assertIsNone(ge._existing_success_date(output, NOW))
-            output.write_text(json.dumps(self.edition()), encoding="utf-8")
-            self.assertEqual(ge._existing_success_date(output, NOW), "2026-11-03")
+            output.write_text(json.dumps(midnight_edition), encoding="utf-8")
+            self.assertIsNone(ge._existing_success_date(output, morning))
+            output.write_text(json.dumps(morning_edition), encoding="utf-8")
+            self.assertEqual(ge._existing_success_date(output, morning), "2026-11-03")
+
+    def test_daily_workflow_uses_dst_covering_cron_and_compilable_python_heredocs(self):
+        workflow = Path(__file__).parent / ".github" / "workflows" / "daily.yml"
+        text = workflow.read_text(encoding="utf-8")
+        self.assertIn("cron: '17 10,11 * * *'", text)
+        self.assertNotIn("cron: '17 11,12 * * *'", text)
+
+        lines = text.splitlines()
+        heredocs = []
+        index = 0
+        while index < len(lines):
+            if lines[index].strip() not in {"python - <<'PY'", "python3 - <<'PY'"}:
+                index += 1
+                continue
+            index += 1
+            body = []
+            while index < len(lines) and lines[index].strip() != "PY":
+                body.append(lines[index])
+                index += 1
+            self.assertLess(index, len(lines), "unterminated Python heredoc")
+            heredocs.append(textwrap.dedent("\n".join(body)) + "\n")
+            index += 1
+
+        self.assertEqual(len(heredocs), 3)
+        for number, source in enumerate(heredocs, start=1):
+            compile(source, f"daily.yml heredoc {number}", "exec")
 
 
 if __name__ == "__main__":

@@ -15,11 +15,30 @@ This free cloud edition is a **source-title digest, not the original AI-research
 
 BBC, ESPN, NASA, Dezeen, and Budget Bytes are configured. A source can fail or have no current stories; those gaps are disclosed. Markets, separate short/long watchlist coverage, betting, private inbox/calendar briefing, new comics, photos, detailed recipes and customized favorite-team reporting are **not supplied by this initial free generator**. No picks, wagers, trades, or fabricated substitute reporting are generated. The public edition must have current stories in at least two desks and weather for at least one location before publishing.
 
-The viewer preserves the last good edition on update failure, checks for new JSON every five minutes, and displays a stale warning for an old issue date, an expired capture, or expired story/weather provenance. Publication also rechecks timestamp age and rejects undeclared nested fields. A pre-7 a.m. manual edition does not suppress the morning refresh. Morning generation is attempted from 7:17 a.m. Eastern ahead of the 8:00 a.m. target, subject to GitHub delays; it is not a guaranteed 8:00 delivery service. No email delivery is enabled by this repository.
+The viewer preserves the last good edition on update failure, checks for new JSON every five minutes, and displays a stale warning for an old issue date, an expired capture, or expired story/weather provenance. Publication also rechecks timestamp age and rejects undeclared nested fields. A pre-6 a.m. manual edition does not suppress the morning refresh. Morning generation is attempted from 6:17 a.m. Eastern ahead of the 7:00 a.m. TV target, subject to GitHub delays; it is not a guaranteed exact-time delivery service. No email delivery is enabled by this repository.
 
-Developer browser verification: `python verify_viewer.py` (requires Playwright and installed Edge; not a production dependency). It tests every slide at three TV sizes, mobile/reduced motion, pause/navigation, stale dates, update failure, and untrusted text injection.
+Required developer browser verification: run **both** `python verify_snapshot_cloud.py` and `python verify_viewer.py` (requires Playwright and installed Edge; not a production dependency). The Snapshot suite tests the default headline board, headline coverage, TV viewport bounds, ticker, mobile/reduced motion, and failed-refresh retention. The Story suite tests detailed slides at three TV sizes, pause/navigation, stale dates, update failure, and untrusted text injection. Neither suite alone is the complete release check.
 
-## Repository and Pages setup
+## TV access and approved viewer
+
+The public viewer is at `https://ndooley-11.github.io/morning-newsletter/`. It is hosted by GitHub Pages, not by a browser or server running on the owner's computer. The TV still needs internet access and a suitable browser or streaming-device display app.
+
+The approved interface defaults to a newspaper-style headline snapshot with a persistent bottom news ticker. It offers a detailed Story view, previous/next controls, pause and fullscreen where the browser supports it. Weather stays at the top. The viewer checks for updated public JSON every five minutes and retains the previous valid edition when a refresh fails. Its date/freshness status remains visible; scheduled collection is a separate cloud workflow, not continuous live reporting.
+
+The free collector does not currently provide stock price quotes or licensed editorial photos. The ticker must say **Quote unavailable**, not show old sample prices as current. General priority headlines can still scroll. Market research, private mail and the richer original sample are not silently substituted into the cloud edition.
+
+On a TV with a web browser:
+
+1. Open the public URL above and bookmark it.
+2. Select **Fullscreen** if available. Otherwise use the browser's full-screen/display setting and set the TV picture sizing to fit without overscan.
+3. Use **Pause** for a stationary morning board, **Previous/Next** to read additional headline pages, and **Story view** for source details.
+4. Reopen the bookmark after the TV starts. Automatic app launch and sleep/power behavior depend on the actual TV or streaming device and have not been verified on physical hardware.
+
+If the device has no suitable browser, choose a supported browser-equipped streaming device or cast the public page from another device. Hardware-specific installation needs the TV/streaming-device model; browser emulation is not physical-TV acceptance.
+
+The layout release changes only reviewed viewer files, developer checks and documentation. Email delivery, DNS and the portfolio site remain unchanged. To roll back a layout release, revert its specific commit on `main` and push that revert; do not reset history or replace the latest public content with the old design sample. The existing workflow will generate/validate and redeploy, retaining the previous successful Pages deployment if it fails.
+
+## Repository deployment setup
 
 The intended public repository is `ndooley-11/morning-newsletter`. Keep the private `MorningNewsletter` project separate; do not copy its Git history, credentials, private data, or unrelated files into this repository.
 
@@ -55,10 +74,12 @@ If scheduled generation decides that no new edition is needed, deploying the unc
 The cron expression is:
 
 ```text
-17 11,12 * * *
+17 10,11 * * *
 ```
 
-GitHub evaluates cron in UTC. The two daily slots help cover the U.S. daylight-saving transition; `--scheduled` must make duplicate same-day runs safe and may skip the second run. Scheduled workflows can be delayed during high load. GitHub also automatically disables scheduled workflows in public repositories after 60 days with no repository activity; re-enable the workflow in the Actions UI or make an appropriate repository update.
+GitHub evaluates cron in UTC. The two daily slots help cover the U.S. daylight-saving transition: 10:17 UTC is 6:17 a.m. Eastern during daylight time; 11:17 UTC is 6:17 a.m. during standard time. The generator's Eastern 06:00–10:59 gate skips the early winter slot and a validated same-day morning capture suppresses the duplicate summer slot. Scheduled workflows can be delayed during high load. GitHub also automatically disables scheduled workflows in public repositories after 60 days with no repository activity; re-enable the workflow in the Actions UI or make an appropriate repository update.
+
+See `TV-MORNING-SETUP.md` for the separate 7 a.m. TV wake and browser-start acceptance test. A cloud content schedule does not turn a television on.
 
 ## Cost and dependencies
 
