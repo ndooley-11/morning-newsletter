@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "edition": {
-    "id": "2026-11-03-078a6eab79c87724",
-    "date": "2026-11-03",
+    "id": "2026-11-04-a14d87b0f1ef3d57",
+    "date": "2026-11-04",
     "title": "The Morning Edition",
     "subtitle": "Savannah & Hinsdale",
     "timezone": "America/New_York",
     "isExample": false,
-    "generatedAt": "2026-11-03T15:38:57Z"
+    "generatedAt": "2026-11-04T12:15:15Z"
   },
   "playback": {
     "secondsPerSlide": 12,
@@ -16,87 +16,100 @@
   "weather": [
     {
       "location": "Savannah, GA 31401",
-      "summary": "Today: Mostly sunny, with a high near 80. East wind around 14 mph, with…",
-      "asOf": "2026-11-03T12:30:24Z"
+      "summary": "Today: Partly sunny, with a high near 81. Southeast wind 5 to 10 mph.…",
+      "asOf": "2026-11-04T11:12:24Z"
     },
     {
       "location": "Hinsdale, IL 60521",
-      "summary": "Today: A chance of rain showers after 1pm. Mostly cloudy, with a high near…",
-      "asOf": "2026-11-03T11:31:07Z"
+      "summary": "Today: Scattered rain showers before 9am, then patchy drizzle and isolated rain showers. Mostly…",
+      "asOf": "2026-11-04T10:46:07Z"
     }
   ],
   "slides": [
     {
-      "id": "notice-b92d12a9bb4cfb83",
+      "id": "notice-298b5d581535fd34",
       "type": "story",
       "desk": "news",
       "section": "Edition status",
-      "headline": "Current capture: 2026-11-03T15:38:57Z",
-      "summary": "This is a partial public-source digest captured at 2026-11-03T15:38:57Z, not AI research. Current story desks: 4; unavailable desks: 3; valid weather locations: 2. RSS/Atom titles only; publication dates appear in source provenance."
+      "headline": "Current capture: 2026-11-04T12:15:15Z",
+      "summary": "This is a partial public-source digest captured at 2026-11-04T12:15:15Z, not AI research. Current story desks: 4; unavailable desks: 3; valid weather locations: 2. RSS/Atom titles only; publication dates appear in source provenance."
     },
     {
-      "id": "story-24ed2a8d476486cc",
+      "id": "story-a57e01296f1d3283",
       "type": "story",
       "desk": "news",
       "section": "World News",
-      "headline": "How the US midterm results could unfold - as millions of Americans head to the polls",
-      "summary": "Published 2026-11-03T10:32:56Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "headline": "Anthony Zurcher: Democrats push deep into Trump heartland on historic night",
+      "summary": "Published 2026-11-04T06:53:56Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
       "source": {
         "label": "BBC News",
-        "url": "https://www.bbc.co.uk/news/articles/cq78pgn7em34o?at_medium=RSS&at_campaign=rss",
-        "asOf": "2026-11-03T10:32:56Z"
+        "url": "https://www.bbc.co.uk/news/articles/cwz0v5lv30lyo?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-04T06:53:56Z"
       }
     },
     {
-      "id": "story-0c99334a12ae9024",
+      "id": "story-af3a117a67ec5a29",
       "type": "story",
       "desk": "news",
       "section": "World News",
-      "headline": "Spanish footballer dies after collision with goalkeeper during match",
-      "summary": "Published 2026-11-03T09:09:18Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
+      "headline": "Trump takes aim at Republicans but says Democrats did a 'good job'",
+      "summary": "Published 2026-11-04T10:15:42Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from BBC News; no article body or long summary was copied.",
       "source": {
         "label": "BBC News",
-        "url": "https://www.bbc.co.uk/sport/football/articles/ck62yvz046pjo?at_medium=RSS&at_campaign=rss",
-        "asOf": "2026-11-03T09:09:18Z"
+        "url": "https://www.bbc.co.uk/news/articles/c6073l9y15xxo?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-04T10:15:42Z"
       }
     },
     {
-      "id": "story-21962c2247f2e38a",
+      "id": "story-623799a72473b3b1",
       "type": "story",
       "desk": "sports",
       "section": "Sports",
-      "headline": "Saliba's back for Arsenal - how does Arteta solve his defensive dilemma?",
-      "summary": "Published 2026-11-03T15:07:49Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from BBC Sport; no article body or long summary was copied.",
+      "headline": "Real reach verbal agreement to sign Man Utd's Gabriel",
+      "summary": "Published 2026-11-04T11:49:23Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from BBC Sport; no article body or long summary was copied.",
       "source": {
         "label": "BBC Sport",
-        "url": "https://www.bbc.co.uk/sport/football/articles/cxj0l3pd9jy7o?at_medium=RSS&at_campaign=rss",
-        "asOf": "2026-11-03T15:07:49Z"
+        "url": "https://www.bbc.co.uk/sport/football/articles/cq146dnrn541o?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-04T11:49:23Z"
       }
     },
     {
-      "id": "story-61bb1ccb077a9360",
+      "id": "story-0bf57da7297e0726",
       "type": "story",
-      "desk": "science-tech",
-      "section": "Science & Technology",
-      "headline": "TB 26-10 Printed Circuit Board Assembly Chip Resistor Body Cracking",
-      "summary": "Published 2026-11-03T15:35:14Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from NASA; no article body or long summary was copied.",
+      "desk": "sports",
+      "section": "Sports",
+      "headline": "Keeper Owono 'would never intentionally hurt anyone'",
+      "summary": "Published 2026-11-04T11:40:57Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from BBC Sport; no article body or long summary was copied.",
       "source": {
-        "label": "NASA",
-        "url": "https://www.nasa.gov/centers-and-facilities/nesc/tb-26-10-printed-circuit-board-assembly-chip-resistor-body-cracking/",
-        "asOf": "2026-11-03T15:35:14Z"
+        "label": "BBC Sport",
+        "url": "https://www.bbc.co.uk/sport/football/articles/c6zxjz40l280o?at_medium=RSS&at_campaign=rss",
+        "asOf": "2026-11-04T11:40:57Z"
       }
     },
     {
-      "id": "story-b37cbeabc38bcc2e",
+      "id": "story-466c197613e722d5",
       "type": "story",
       "desk": "science-tech",
       "section": "Science & Technology",
-      "headline": "NASA Astronaut, STEM Creator Connect with Students for STEM Day",
-      "summary": "Published 2026-11-03T15:15:50Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from NASA; no article body or long summary was copied.",
+      "headline": "APOD: 2026 November 4 – The Not-So-Hidden Galaxy, IC 342",
+      "summary": "Published 2026-11-04T05:05:00Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from NASA; no article body or long summary was copied.",
       "source": {
         "label": "NASA",
-        "url": "https://www.nasa.gov/learning-resources/nasa-astronaut-stem-creator-connect-with-students-for-stem-day/",
-        "asOf": "2026-11-03T15:15:50Z"
+        "url": "https://science.nasa.gov/image-article/apod-2026-november-4-the-not-so-hidden-galaxy-ic-342/",
+        "asOf": "2026-11-04T05:05:00Z"
+      }
+    },
+    {
+      "id": "story-6c9c75b33fa93c42",
+      "type": "story",
+      "desk": "science-tech",
+      "section": "Science & Technology",
+      "headline": "Before the Dawn in America’s Heartland",
+      "summary": "Published 2026-11-04T05:01:00Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from NASA; no article body or long summary was copied.",
+      "source": {
+        "label": "NASA",
+        "url": "https://science.nasa.gov/earth/earth-observatory/before-the-dawn-in-americas-heartland/",
+        "asOf": "2026-11-04T05:01:00Z"
       }
     },
     {
@@ -105,7 +118,7 @@
       "desk": "lifestyle",
       "section": "Lifestyle",
       "headline": "Chicken Corn Chowder",
-      "summary": "Published 2026-11-02T14:30:00Z; captured 2026-11-03T15:38:57Z. RSS/Atom title from Budget Bytes; no article body or long summary was copied.",
+      "summary": "Published 2026-11-02T14:30:00Z; captured 2026-11-04T12:15:15Z. RSS/Atom title from Budget Bytes; no article body or long summary was copied.",
       "source": {
         "label": "Budget Bytes",
         "url": "https://www.budgetbytes.com/chicken-corn-chowder/",
@@ -118,7 +131,7 @@
       "desk": "weather",
       "section": "Local forecast",
       "headline": "Savannah, GA 31401",
-      "summary": "NWS forecast updated 2026-11-03T12:30:24Z. Today: Mostly sunny, with a high near 80. East wind around 14 mph, with gusts as high as 23 mph. Tonight: Partly cloudy, with a low around 68. East wind 5 to 12 mph, with gusts as high as 21 mph. Wednesday: Partly sunny, with a high near 81. East wind 5 to 10 mph."
+      "summary": "NWS forecast updated 2026-11-04T11:12:24Z. Today: Partly sunny, with a high near 81. Southeast wind 5 to 10 mph. Tonight: Mostly cloudy, with a low around 67. Southeast wind 0 to 5 mph. Thursday: Mostly sunny, with a high near 82. South wind 0 to 6 mph."
     },
     {
       "id": "notice-02554cbc314307a2",
@@ -126,7 +139,7 @@
       "desk": "weather",
       "section": "Local forecast",
       "headline": "Hinsdale, IL 60521",
-      "summary": "NWS forecast updated 2026-11-03T11:31:07Z. Today: A chance of rain showers after 1pm. Mostly cloudy, with a high near 70. South wind 15 to 20 mph, with gusts as high as 40 mph. Chance of precipitation is 40%. New rainfall amounts less than a tenth of an inch possible. Tonight: Rain showers. Mostly cloudy, with a low around 61. South wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 90%. New rainfall amounts between a quarter and half of an inch possible. Wednesday: Rain showers likely. Mostly cloudy. High near 64, with temperatures falling to around 59 in the afternoon. South southwest wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 60%. New rainfall amounts less than a tenth of an inch possible."
+      "summary": "NWS forecast updated 2026-11-04T10:46:07Z. Today: Scattered rain showers before 9am, then patchy drizzle and isolated rain showers. Mostly cloudy. High near 64, with temperatures falling to around 56 in the afternoon. Southwest wind around 15 mph, with gusts as high as 30 mph. Chance of precipitation is 40%. New rainfall amounts less than a tenth of an inch possible. Tonight: Patchy drizzle and isolated rain showers before 10pm. Mostly cloudy, with a low around 49. Southwest wind around 15 mph, with gusts as high as 25 mph. Thursday: A chance of rain showers after noon. Mostly cloudy, with a high near 57. West southwest wind 10 to 15 mph, with gusts as high as 25 mph. Chance of precipitation is 40%. New rainfall amounts less than a tenth of an inch possible."
     },
     {
       "id": "notice-7300b124399a50b6",
@@ -171,7 +184,7 @@
   ],
   "quality": {
     "mode": "partial",
-    "captureTime": "2026-11-03T15:38:57Z",
+    "captureTime": "2026-11-04T12:15:15Z",
     "coverage": {
       "desksTotal": 8,
       "desksWithCurrentStories": 4,
@@ -191,8 +204,8 @@
       "failedSources": 2,
       "weatherLocationsConfigured": 2,
       "weatherLocationsValid": 2,
-      "stories": 6,
-      "slides": 14
+      "stories": 7,
+      "slides": 15
     },
     "errors": [
       {
